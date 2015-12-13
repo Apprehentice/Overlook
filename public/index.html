@@ -25,23 +25,49 @@
           <span class="chatTarget mdl-navigation__link active" data-user="">All Users</span>
         </nav>
       </div>
-      <main class="mdl-layout__content">
-        <div id="content" class="page-content">
-          <ul id="chatList">
-            <li><i>Never tell your password to anyone.</i></li>
-          </ul>
+      <main id="pageContainer" class="mdl-layout__content">
+        <div id="contentScroll" class="mdl-layout__content">
+          <div id="content" class="page-content">
+            <ul id="chatList">
+              <li><i>Never tell your password to anyone.</i></li>
+            </ul>
+          </div>
+        </div>
+        <div id="inputContainer">
+          <form id="chatForm">
+            <input type="hidden" name="command" value="message">
+            <input id="chatInput" type="text" class="mdl-textfield__input" name="content" value="" placeholder="Type your message here..." required disabled>
+            <button class="mdl-button mdl-js-button mdl-button--icon mdl-button--colored" type="submit" name="chatSubmit">
+              <i class="material-icons">send</i>
+            </button>
+          </form>
         </div>
       </main>
-      <main class="mdl-layout__content">
-        <form id="chatForm">
-          <input type="hidden" name="command" value="message">
-          <input type="text" name="content" value="" placeholder="Type your message here...">
-          <button class="mdl-button mdl-js-button mdl-button--icon mdl-button--colored" type="submit" name="chatSubmit">
-            <i class="material-icons">send</i>
-          </button>
-        </form>
-      </main>
     </div>
+
+    <div class="mdl-card mdl-shadow--2dp" id="loginModal">
+      <div class="mdl-card__title">
+        <h2 class="mdl-card__title-text">Chat Now!</h2>
+      </div>
+      <div class="mdl-card__supporting-text">
+        <p id="loginError"></p>
+        <form id="registerForm">
+          <input type="hidden" name="command" value="register">
+          <div class="mdl-textfield mdl-js-textfield">
+            <input class="mdl-textfield__input" type="text" name="room" id="roomFIeld" required>
+            <label class="mdl-textfield__label" for="roomField">Room Name</label>
+          </div>
+          <div class="mdl-textfield mdl-js-textfield">
+            <input class="mdl-textfield__input" type="text" name="name" id="nameFIeld" required>
+            <label class="mdl-textfield__label" for="nameField">User Name</label>
+          </div>
+        </form>
+      </div>
+      <div class="mdl-card__actions">
+        <input type="submit" form="registerForm" value="Register" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+      </div>
+    </div>
+    <div id="loginShade"></div>
 
     <script src="/js/main.js"></script>
   </body>

@@ -51,6 +51,7 @@ wss.on('connection', function(client) {
     switch(r.command)
     {
       case 'register':
+        var nameCollision = false;
         if (!client.metadata.registered)
         {
           if (r.room && typeof(r.room) == "string")
@@ -72,48 +73,53 @@ wss.on('connection', function(client) {
                 rooms[r.room].clients.forEach(function(c) {
                   if (c.metadata.name === r.name)
                   {
-                    if (c.readyState === client.OPEN)
-                      client.send(JSON.stringify({
-                        command: "error",
-                        content: "Registration failed: That user name already exists in that room."
-                      }));
-                    return;
+                    nameCollision = true;
                   }
                 });
               }
 
-              client.metadata.room = rooms[r.room];
-              client.metadata.name = r.name;
-              client.metadata.registered = true;
+              if (!nameCollision)
+              {
+                client.metadata.room = rooms[r.room];
+                client.metadata.name = r.name;
+                client.metadata.registered = true;
 
-              rooms[r.room].clients.push(client);
+                var rusers = [];
+                client.metadata.room.clients.forEach(function(c) {
+                  rusers.push({ name: c.metadata.name, level: c.metadata.level, muted: c.metadata.muted });
+                });
 
-              var rusers = [];
-              client.metadata.room.clients.forEach(function(c) {
-                rusers.push({ name: c.metadata.name, level: c.metadata.level, muted: c.metadata.muted });
-              });
+                client.send(JSON.stringify({
+                  command: "join",
+                  name: client.metadata.name,
+                  room: client.metadata.room.title,
+                  users: rusers
+                }));
 
-              client.send(JSON.stringify({
-                command: "join",
-                name: client.metadata.name,
-                room: client.metadata.room.title,
-                users: rusers
-              }));
+                rooms[r.room].clients.push(client);
 
-              client.metadata.room.clients.forEach(function(c) {
-                if (c.readyState === client.OPEN)
-                  c.send(JSON.stringify({
-                    command: "adduser",
-                    name: client.metadata.name,
-                    level: client.metadata.level
-                  }));
-              });
+                client.metadata.room.clients.forEach(function(c) {
+                  if (c.readyState === client.OPEN)
+                    c.send(JSON.stringify({
+                      command: "adduser",
+                      name: client.metadata.name,
+                      level: client.metadata.level
+                    }));
+                });
+              }
+              else
+              {
+                client.send(JSON.stringify({
+                  command: "error",
+                  content: "Registration failed: Invalid user name."
+                }));
+              }
             }
             else
             {
               client.send(JSON.stringify({
                 command: "error",
-                content: "Registration failed: Invalid user name."
+                content: "Registration failed: Invalid room name."
               }));
             }
           }
@@ -121,16 +127,9 @@ wss.on('connection', function(client) {
           {
             client.send(JSON.stringify({
               command: "error",
-              content: "Registration failed: Invalid room name."
+              content: "Registration failed: You are already registered"
             }));
           }
-        }
-        else
-        {
-          client.send(JSON.stringify({
-            command: "error",
-            content: "Registration failed: You are already registered"
-          }));
         }
         break;
       case 'message':
@@ -162,7 +161,7 @@ wss.on('connection', function(client) {
                 content: escape(r.content)
               }));
 
-              if (target != client.metadata.room.master)
+              if (target != client.metadata.room.master && client != client.metadata.room.master)
                 client.metadata.room.master.send(JSON.stringify({
                   command: "message",
                   author: client.metadata.name,
@@ -221,7 +220,7 @@ wss.on('connection', function(client) {
 
             if (target)
             {
-              target.metadata.mute = r.muted;
+              target.metadata.muted = r.muted;
               client.metadata.room.clients.forEach(function(c) {
                 if (c.readyState === client.OPEN)
                   c.send(JSON.stringify({

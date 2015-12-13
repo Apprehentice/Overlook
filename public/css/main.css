@@ -3,17 +3,19 @@ body
   font-family: 'roboto', sans-serif;
 }
 
+#pageContainer
+{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
 #chatForm
 {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: stretch;
-}
-
-#chatForm [type="text"]
-{
-  width: 100%;
 }
 
 #userList
@@ -48,9 +50,37 @@ body
   font-weight: 700;
 }
 
-#content
+#loginModal
 {
-  min-height: 100vh;
+  position: absolute;
+
+  width: 50vw;
+  height: 50vh;
+
+  left: 25vw;
+  top: 25vh;
+
+  z-index: 9999;
+}
+
+#loginShade
+{
+  width: 100vw;
+  height: 100vh;
+
+  background-color: rgba(0, 0, 0, 0.5);
+
+  z-index: 9998;
+}
+
+#loginError
+{
+  background-color: #FF8A80;
+  display: none;
+
+  border-radius: 4px;
+
+  padding: 0.25em;
 }
 
 .mdl-navigation__link
@@ -72,4 +102,29 @@ body
 .userName
 {
   line-height: 2.5em;
+}
+
+.other.whisper.message
+{
+  opacity: 0.5;
+}
+
+.other.whisper.message:hover
+{
+  opacity: 1;
+}
+
+.notification
+{
+  background-color: #B9F6CA !important;
+}
+
+.error
+{
+  background-color: #FF8A80 !important;
+}
+
+.warning
+{
+  background-color: #F4FF81 !important;
 }
