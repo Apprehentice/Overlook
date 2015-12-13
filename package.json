@@ -1,0 +1,16 @@
+{
+  "name": "overlook",
+  "version": "1.0.0",
+  "description": "A multi-user chatroom server for RPGs where the Master can view conversations between users.",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Mathew Scheidler",
+  "license": "ISC",
+  "dependencies": {
+    "escape-html": "^1.0.3",
+    "express": "^4.13.3",
+    "ws": "^0.8.1"
+  }
+}

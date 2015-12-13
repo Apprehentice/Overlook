@@ -1,0 +1,75 @@
+body
+{
+  font-family: 'roboto', sans-serif;
+}
+
+#chatForm
+{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: stretch;
+}
+
+#chatForm [type="text"]
+{
+  width: 100%;
+}
+
+#userList
+{
+  list-style-type: none;
+}
+
+#chatList
+{
+  margin: 0px;
+  padding-left: 0.25em;
+  padding-right: 0.25em;
+
+  list-style-type: none;
+}
+
+#chatList li
+{
+  padding-left: 0.25em;
+  padding-right: 0.25em;
+
+  border-radius: 4px;
+}
+
+#chatList li:nth-child(even)
+{
+  background-color: #e0e0e0;
+}
+
+#chatList li > .author
+{
+  font-weight: 700;
+}
+
+#content
+{
+  min-height: 100vh;
+}
+
+.mdl-navigation__link
+{
+  cursor: pointer;
+}
+
+.mdl-navigation__link.active
+{
+  font-weight: 700;
+  background-color: #e0e0e0 !important;
+}
+
+.mdl-navigation__link.highlight
+{
+  background-color: #ccff90;
+}
+
+.userName
+{
+  line-height: 2.5em;
+}
