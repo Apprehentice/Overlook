@@ -27,7 +27,7 @@ $(function() {
   var master = "";
   var users = [];
 
-  var sock = new WebSocket("ws://192.168.1.4:4080");
+  var sock = new WebSocket("ws://localhost:4080");
   sock.onopen = function(evt) {
     // TODO: Set up connection notifications.
 
